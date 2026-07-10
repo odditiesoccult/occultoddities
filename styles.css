@@ -1,0 +1,792 @@
+/* =========================================================
+   OCCULT ODDITIES — Design tokens
+   Palette: deep ink-plum background, aged brass accent,
+   oxblood seal-wax red, muted moss for taxonomy/tags,
+   warm parchment ink for text.
+   Type: Cinzel (display / engraved), Cormorant Garamond
+   (body / long-form), Jost (utility / nav / labels).
+   ========================================================= */
+
+:root{
+  --bg:        #14111A;
+  --bg-alt:    #1D1822;
+  --bg-alt-2:  #241D2B;
+  --ink:       #EDE6D6;
+  --ink-dim:   #B3A99A;
+  --ink-faint: #7C7488;
+  --gold:      #B08D57;
+  --gold-hi:   #D3B37F;
+  --oxblood:   #8A3A3A;
+  --oxblood-hi:#A94848;
+  --moss:      #6C7A5E;
+  --line:      rgba(176,141,87,0.22);
+  --line-soft: rgba(176,141,87,0.12);
+
+  --font-display: "Cinzel", serif;
+  --font-body: "Cormorant Garamond", serif;
+  --font-ui: "Jost", sans-serif;
+
+  --container: 1180px;
+  --radius: 2px;
+}
+
+*, *::before, *::after{ box-sizing: border-box; }
+
+html{ scroll-behavior: smooth; }
+
+body{
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 19px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* subtle ambient texture: faint radial glow + grain-like noise via layered gradients */
+body{
+  background-image:
+    radial-gradient(ellipse 900px 600px at 15% -10%, rgba(176,141,87,0.07), transparent 60%),
+    radial-gradient(ellipse 800px 500px at 90% 10%, rgba(122,46,46,0.06), transparent 60%);
+  background-attachment: fixed;
+}
+
+h1,h2,h3,h4{
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  color: var(--ink);
+  margin: 0 0 0.6em;
+}
+
+h1{ font-size: clamp(2.4rem, 5vw, 3.6rem); line-height: 1.15; }
+h2{ font-size: clamp(1.7rem, 3.4vw, 2.3rem); }
+h3{ font-size: 1.35rem; }
+
+p{ margin: 0 0 1.1em; color: var(--ink-dim); }
+a{ color: var(--gold); text-decoration: none; }
+a:hover{ color: var(--gold-hi); }
+
+img{ max-width: 100%; display:block; }
+
+.eyebrow{
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.9em;
+  display: inline-block;
+}
+
+.container{
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+section{ padding: 96px 0; }
+@media (max-width: 720px){ section{ padding: 64px 0; } }
+
+/* ---------- Focus states (accessibility) ---------- */
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible{
+  outline: 2px solid var(--gold-hi);
+  outline-offset: 3px;
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+}
+
+/* =========================================================
+   HEADER / NAV
+   ========================================================= */
+.site-header{
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(20,17,26,0.88);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+
+.site-header .container{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 18px;
+  padding-bottom: 18px;
+}
+
+.brand{
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--ink);
+}
+.brand:hover{ color: var(--ink); }
+.brand svg{ width: 36px; height: 36px; flex-shrink: 0; }
+.brand-word{
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.brand-word span{ color: var(--gold); }
+
+.nav-links{
+  display: flex;
+  gap: 34px;
+  list-style: none;
+  margin: 0; padding: 0;
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.nav-links a{
+  color: var(--ink-dim);
+  padding-bottom: 4px;
+  border-bottom: 1px solid transparent;
+}
+.nav-links a:hover, .nav-links a.active{
+  color: var(--gold-hi);
+  border-bottom: 1px solid var(--gold);
+}
+
+.nav-toggle{
+  display: none;
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  width: 42px; height: 42px;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+@media (max-width: 860px){
+  .nav-toggle{ display: block; }
+  .nav-links{
+    position: absolute;
+    top: 100%; left: 0; right: 0;
+    flex-direction: column;
+    background: var(--bg-alt);
+    border-bottom: 1px solid var(--line);
+    padding: 20px 32px 28px;
+    gap: 18px;
+    display: none;
+  }
+  .nav-links.open{ display: flex; }
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+.btn{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 15px 30px;
+  border-radius: var(--radius);
+  border: 1px solid var(--gold);
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, transform 0.15s ease;
+}
+.btn-primary{
+  background: var(--gold);
+  color: #191320;
+}
+.btn-primary:hover{
+  background: var(--gold-hi);
+  color: #191320;
+  transform: translateY(-1px);
+}
+.btn-ghost{
+  background: transparent;
+  color: var(--gold-hi);
+}
+.btn-ghost:hover{
+  background: rgba(176,141,87,0.1);
+  color: var(--gold-hi);
+}
+
+/* =========================================================
+   DIVIDER — constellation motif
+   A row of connected points standing in for a section rule.
+   ========================================================= */
+.divider{
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  opacity: 0.75;
+}
+.divider svg{ width: 220px; height: 22px; }
+
+/* =========================================================
+   HERO
+   ========================================================= */
+.hero{
+  padding: 120px 0 100px;
+  position: relative;
+  overflow: hidden;
+}
+.hero .container{
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 56px;
+  align-items: center;
+}
+@media (max-width: 900px){
+  .hero .container{ grid-template-columns: 1fr; }
+  .hero{ padding-top: 64px; }
+}
+
+.hero h1{ margin-bottom: 0.5em; }
+.hero-sub{ font-size: 1.15rem; max-width: 46ch; }
+.hero-ctas{ display: flex; gap: 16px; flex-wrap: wrap; margin-top: 1.6em; }
+
+.hero-art{
+  position: relative;
+  aspect-ratio: 4/5;
+  background: linear-gradient(160deg, var(--bg-alt-2), var(--bg-alt));
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  display:flex; align-items:center; justify-content:center;
+}
+.hero-art svg{ width: 62%; height: 62%; opacity: 0.9; }
+
+/* =========================================================
+   PILLARS (ethos)
+   ========================================================= */
+.pillars{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+@media (max-width: 780px){ .pillars{ grid-template-columns: 1fr; } }
+.pillar{ padding: 8px 6px; }
+.pillar svg{ width: 30px; height: 30px; color: var(--gold); margin-bottom: 14px; }
+.pillar h3{ font-size: 1.1rem; margin-bottom: 0.4em; }
+.pillar p{ font-size: 0.98rem; margin-bottom: 0; }
+
+/* =========================================================
+   FEATURED RELEASE CARD
+   ========================================================= */
+.release{
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 52px;
+  align-items: center;
+  background: var(--bg-alt);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 48px;
+  position: relative;
+}
+@media (max-width: 860px){
+  .release{ grid-template-columns: 1fr; padding: 32px; }
+}
+
+.release-cover{
+  aspect-ratio: 3/4;
+  background: linear-gradient(150deg, #2A2130, #171220);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  position: relative;
+  overflow: hidden;
+}
+.release-cover svg{ width: 100%; height: 100%; }
+
+.stamp{
+  position: absolute;
+  top: -18px; right: -18px;
+  width: 92px; height: 92px;
+  z-index: 3;
+}
+
+.release-price{
+  font-family: var(--font-ui);
+  color: var(--gold-hi);
+  font-size: 1.1rem;
+  letter-spacing: 0.06em;
+  margin-bottom: 1.2em;
+}
+
+/* =========================================================
+   CATEGORY GRID
+   ========================================================= */
+.cat-grid{
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 24px;
+  text-align: center;
+}
+@media (max-width: 900px){ .cat-grid{ grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 520px){ .cat-grid{ grid-template-columns: repeat(2, 1fr); } }
+
+.cat-item{
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 30px 14px;
+  background: var(--bg-alt);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.cat-item:hover{ border-color: var(--gold); transform: translateY(-3px); }
+.cat-item svg{ width: 30px; height: 30px; color: var(--gold-hi); margin: 0 auto 12px; }
+.cat-item span{
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+/* =========================================================
+   NEWSLETTER TEASER / COVEN BLOCK
+   ========================================================= */
+.coven-block{
+  background: var(--bg-alt);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 56px;
+  text-align: center;
+}
+@media (max-width: 640px){ .coven-block{ padding: 36px 24px; } }
+.coven-block h2{ margin-bottom: 0.3em; }
+.coven-block p{ max-width: 56ch; margin-left: auto; margin-right: auto; }
+
+.signup-form{
+  display: flex;
+  gap: 12px;
+  max-width: 440px;
+  margin: 28px auto 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.signup-form input[type="email"]{
+  flex: 1 1 240px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+}
+.signup-form input::placeholder{ color: var(--ink-faint); }
+.form-note{ font-size: 0.82rem; color: var(--ink-faint); font-family: var(--font-ui); }
+.form-success{
+  display: none;
+  color: var(--gold-hi);
+  font-family: var(--font-ui);
+  font-size: 0.92rem;
+  margin-top: 10px;
+}
+.form-success.show{ display: block; }
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+.site-footer{
+  border-top: 1px solid var(--line);
+  padding: 56px 0 40px;
+  background: var(--bg-alt);
+}
+.footer-grid{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 32px;
+  margin-bottom: 36px;
+}
+.footer-brand{ max-width: 320px; }
+.footer-brand .brand{ margin-bottom: 12px; }
+.footer-brand p{ font-size: 0.95rem; }
+
+.footer-links{
+  list-style: none;
+  margin: 0; padding: 0;
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+}
+.footer-links li{ margin-bottom: 10px; }
+.footer-links a{ color: var(--ink-dim); }
+.footer-links a:hover{ color: var(--gold-hi); }
+
+.footer-bottom{
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  color: var(--ink-faint);
+  border-top: 1px solid var(--line-soft);
+  padding-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* =========================================================
+   PAGE HEADER (used on interior pages)
+   ========================================================= */
+.page-header{
+  padding: 80px 0 56px;
+  text-align: center;
+  border-bottom: 1px solid var(--line);
+}
+.page-header p{ max-width: 56ch; margin: 0 auto; }
+
+/* =========================================================
+   ABOUT PAGE
+   ========================================================= */
+.about-story{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+}
+@media (max-width: 860px){ .about-story{ grid-template-columns: 1fr; } }
+.about-art{
+  aspect-ratio: 1/1;
+  background: linear-gradient(150deg, var(--bg-alt-2), var(--bg-alt));
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  display:flex; align-items:center; justify-content:center;
+}
+.about-art svg{ width: 55%; height: 55%; }
+
+.values-grid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+@media (max-width: 780px){ .values-grid{ grid-template-columns: 1fr; } }
+.value-card{
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 32px;
+  background: var(--bg-alt);
+}
+.value-card h3{ color: var(--gold-hi); }
+
+.maker{
+  display: grid;
+  grid-template-columns: 0.6fr 1.4fr;
+  gap: 40px;
+  align-items: center;
+  background: var(--bg-alt);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 44px;
+}
+@media (max-width: 780px){ .maker{ grid-template-columns: 1fr; padding: 28px; } }
+.maker-photo{
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  background: linear-gradient(150deg, #2A2130, #171220);
+  border: 1px solid var(--line);
+}
+
+/* =========================================================
+   GRIMOIRE (blog)
+   ========================================================= */
+.filter-bar{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 52px;
+  font-family: var(--font-ui);
+}
+.filter-btn{
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--ink-dim);
+  padding: 9px 20px;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.filter-btn:hover{ border-color: var(--gold); color: var(--ink); }
+.filter-btn.active{ background: var(--gold); border-color: var(--gold); color: #191320; }
+
+.post-grid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+@media (max-width: 940px){ .post-grid{ grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px){ .post-grid{ grid-template-columns: 1fr; } }
+
+.post-card{
+  background: var(--bg-alt);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+  display: flex; flex-direction: column;
+}
+.post-card:hover{ transform: translateY(-4px); border-color: var(--gold); }
+.post-thumb{
+  aspect-ratio: 16/10;
+  background: linear-gradient(150deg, #2A2130, #191420);
+  display:flex; align-items:center; justify-content:center;
+}
+.post-thumb svg{ width: 40%; height: 40%; opacity: 0.85; }
+.post-body{ padding: 26px; flex: 1; display:flex; flex-direction:column; }
+.post-tag{
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--moss);
+  margin-bottom: 10px;
+}
+.post-body h3{ margin-bottom: 0.4em; }
+.post-body p{ font-size: 0.98rem; flex: 1; }
+.post-read{
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-top: 8px;
+}
+
+/* =========================================================
+   TAROT — coming soon
+   ========================================================= */
+.coming-soon-banner{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: linear-gradient(120deg, var(--oxblood), #5B2727);
+  color: #F3E7DA;
+  font-family: var(--font-ui);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  padding: 16px 20px;
+  text-align: center;
+  border-bottom: 1px solid rgba(0,0,0,0.2);
+}
+.coming-soon-banner svg{ width: 20px; height: 20px; flex-shrink: 0; }
+
+.tarot-hero{
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 52px;
+  align-items: center;
+}
+@media (max-width: 860px){ .tarot-hero{ grid-template-columns: 1fr; } }
+.tarot-card-art{
+  aspect-ratio: 3/5;
+  max-width: 320px;
+  margin: 0 auto;
+  background: linear-gradient(160deg, #241A2E, #150F1B);
+  border: 1px solid var(--gold);
+  border-radius: 10px;
+  display:flex; align-items:center; justify-content:center;
+  position: relative;
+}
+.tarot-card-art svg{ width: 68%; height: 68%; }
+
+.offer-list{
+  list-style: none;
+  margin: 0; padding: 0;
+  display: grid;
+  gap: 18px;
+}
+.offer-list li{
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  font-size: 1.02rem;
+  color: var(--ink-dim);
+}
+.offer-list svg{ width: 20px; height: 20px; color: var(--gold); flex-shrink: 0; margin-top: 3px; }
+
+/* =========================================================
+   VAULT (owner-only)
+   ========================================================= */
+.vault-gate{
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+}
+.vault-gate-box{
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg-alt);
+  padding: 48px 36px;
+}
+.vault-gate-box svg{ width: 46px; height: 46px; color: var(--gold); margin: 0 auto 20px; }
+.vault-gate-box input{
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  margin: 18px 0 12px;
+  text-align: center;
+}
+.vault-error{
+  color: var(--oxblood-hi);
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  min-height: 1.2em;
+}
+
+.vault-content{ display: none; }
+.vault-content.unlocked{ display: block; }
+
+.vault-notice{
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  color: var(--ink-faint);
+  border: 1px dashed var(--line);
+  padding: 14px 18px;
+  border-radius: var(--radius);
+  margin-bottom: 40px;
+}
+
+.vault-panel{
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg-alt);
+  padding: 32px;
+  margin-bottom: 28px;
+}
+.vault-panel h3{ color: var(--gold-hi); margin-bottom: 0.6em; }
+.vault-panel textarea{
+  width: 100%;
+  min-height: 140px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  padding: 14px;
+  border-radius: var(--radius);
+  resize: vertical;
+}
+
+/* =========================================================
+   MISC / UTILITY
+   ========================================================= */
+.section-head{ text-align: center; max-width: 640px; margin: 0 auto 56px; }
+.section-head p{ margin: 0 auto; }
+.text-center{ text-align: center; }
+.mt-lg{ margin-top: 3rem; }
+
+Shared JavaScript:
+// =========================================================
+// OCCULT ODDITIES — shared behavior
+// =========================================================
+
+document.addEventListener('DOMContentLoaded', function () {
+
+  // ---------- Mobile nav toggle ----------
+  var toggle = document.querySelector('.nav-toggle');
+  var links = document.querySelector('.nav-links');
+  if (toggle && links) {
+    toggle.addEventListener('click', function () {
+      links.classList.toggle('open');
+      var expanded = links.classList.contains('open');
+      toggle.setAttribute('aria-expanded', expanded);
+    });
+  }
+
+  // ---------- Newsletter / signup forms ----------
+  // Front-end only for now. To go live, connect this form to a real
+  // email provider (Mailchimp, ConvertKit, Flodesk, etc.) — most give
+  // you a hosted form action URL you can drop into the <form> tag,
+  // or an embeddable widget you can swap in for this one.
+  document.querySelectorAll('.signup-form').forEach(function (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var success = form.parentElement.querySelector('.form-success');
+      var input = form.querySelector('input[type="email"]');
+      if (success) {
+        success.textContent = 'Welcome to the coven. Check your inbox for a confirmation soon.';
+        success.classList.add('show');
+      }
+      if (input) input.value = '';
+    });
+  });
+
+  // ---------- Grimoire filter ----------
+  var filterButtons = document.querySelectorAll('.filter-btn');
+  var postCards = document.querySelectorAll('.post-card');
+  if (filterButtons.length && postCards.length) {
+    filterButtons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        filterButtons.forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        var tag = btn.getAttribute('data-filter');
+        postCards.forEach(function (card) {
+          var cardTag = card.getAttribute('data-tag');
+          card.style.display = (tag === 'all' || tag === cardTag) ? '' : 'none';
+        });
+      });
+    });
+  }
+
+  // ---------- Vault gate ----------
+  // NOTE: This is a front-end-only lock meant to keep the page out of
+  // casual view — it is NOT real security. Anyone who opens the page
+  // source can find the password. Do not store anything truly
+  // sensitive (real financial info, passwords, etc.) on this page.
+  var vaultForm = document.getElementById('vault-form');
+  if (vaultForm) {
+    var VAULT_PASSWORD = 'moonlit13'; // change this to your own passphrase
+    vaultForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var input = document.getElementById('vault-password');
+      var error = document.getElementById('vault-error');
+      var gate = document.getElementById('vault-gate');
+      var content = document.getElementById('vault-content');
+      if (input.value === VAULT_PASSWORD) {
+        gate.style.display = 'none';
+        content.classList.add('unlocked');
+        sessionStorage_safeSet('vault-unlocked', '1');
+      } else {
+        error.textContent = 'That is not the right word. Try again.';
+        input.value = '';
+        input.focus();
+      }
+    });
+
+    // Keep unlocked for the current tab session only.
+    if (sessionStorage_safeGet('vault-unlocked') === '1') {
+      document.getElementById('vault-gate').style.display = 'none';
+      document.getElementById('vault-content').classList.add('unlocked');
+    }
+  }
+
+  function sessionStorage_safeSet(key, val) {
+    try { window.sessionStorage.setItem(key, val); } catch (err) { /* ignore */ }
+  }
+  function sessionStorage_safeGet(key) {
+    try { return window.sessionStorage.getItem(key); } catch (err) { return null; }
+  }
+
+});
